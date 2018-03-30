@@ -343,6 +343,12 @@ describe('Linked List', function () {
             expect(list.getSize()).to.equal(2);
         });
 
+        it('Returns -1 if findById is passed an ID that doesn\'t exist', function () {
+            populateList(list, 3);
+            var node = list.removeNodeById("UNFINDABLE");
+            expect(node).to.equal(-1);
+        });
+
     });
 
     describe('find functionality', function () {
@@ -404,6 +410,12 @@ describe('Linked List', function () {
             populateList(list, 3);
             var index = list.indexOf('not found');
             expect(index).to.equal(-1);
+        });
+
+        it('Returns -1 if findById is passed an ID that doesn\'t exist', function () {
+            populateList(list, 3);
+            var node = list.findById("UNFINDABLE");
+            expect(node).to.equal(-1);
         });
 
         it('returns node at given index', function () {

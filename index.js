@@ -349,7 +349,7 @@
          */
         removeNodeById: function (id) {
             var nodeToRemove = this.findById(id);
-            if(!nodeToRemove)
+            if (nodeToRemove === -1)
                 return -1;
 
             if (nodeToRemove.id === this.getHeadNode().id) {
