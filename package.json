@@ -1,7 +1,7 @@
 {
-  "name": "dbly-linked-list",
+  "name": "dbly-linked-hashtable-list",
   "version": "0.2.0",
-  "description": "Javascript implementation of a doubly linked-list data structure",
+  "description": "Javascript implementation of a doubly linked-list data structure, with built-in hashtable for O(1) lookups and removals",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -13,14 +13,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jasonsjones/doubly-linked-list.git"
+    "url": "https://github.com/sikanrong/doubly-linked-list.git"
   },
   "keywords": [
     "doubly linked-list",
     "linked list",
+    "hashtable",
+    "hash table",
     "data structure"
   ],
-  "author": "Jason Jones",
+  "author": "Jason Jones, Alexander Pilafian",
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.1.2",
