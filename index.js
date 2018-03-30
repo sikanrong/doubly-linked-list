@@ -33,6 +33,7 @@
         this.head = null;
         this.tail = null;
         this.size = 0;
+        this.nodeHashTable = {};
 
         // add iterator as a property of this list to share the same
         // iterator instance with all other methods that may require
@@ -56,8 +57,10 @@
          *                                    node
          * @returns {object} Node object intialized with 'data'
          */
-        createNewNode: function (data) {
-            return new Node(data);
+        createNewNode: function (data, id) {
+            var node = new Node(data, id);
+            this.nodeHashTable[node.id] = node;
+            return node;
         },
 
         /**
@@ -116,8 +119,8 @@
          *                                    node
          * @returns {boolean} true if insert operation was successful
          */
-        insert: function (data) {
-            var newNode = this.createNewNode(data);
+        insert: function (data, id) {
+            var newNode = this.createNewNode(data, id);
             if (this.isEmpty()) {
                 this.head = this.tail = newNode;
             } else {
@@ -137,11 +140,11 @@
          *                                    node
          * @returns {boolean} true if insert operation was successful
          */
-        insertFirst: function (data) {
+        insertFirst: function (data, id) {
             if (this.isEmpty()) {
                 this.insert(data);
             } else {
-                var newNode = this.createNewNode(data);
+                var newNode = this.createNewNode(data, id);
 
                 newNode.next = this.head;
                 this.head.prev = newNode;
@@ -159,9 +162,9 @@
          * @param {number} index The index in the list to insert the new node
          * @param {object|string|number} data The data to initialize with the node
          */
-        insertAt: function (index, data) {
+        insertAt: function (index, data, id) {
             var current = this.getHeadNode(),
-                newNode = this.createNewNode(data),
+                newNode = this.createNewNode(data, id),
                 position = 0;
 
             // check for index out-of-bounds
@@ -261,6 +264,8 @@
             }
             this.size -= 1;
 
+            delete this.nodeHashTable[nodeToRemove.id];
+
             return nodeToRemove;
         },
 
@@ -284,6 +289,8 @@
                 this.head.prev = null;
                 this.size -= 1;
             }
+
+            delete this.nodeHashTable[nodeToRemove.id];
 
             return nodeToRemove;
         },
@@ -318,6 +325,7 @@
             nodeToRemove.next = nodeToRemove.prev = null;
 
             this.size -= 1;
+            delete this.nodeHashTable[nodeToRemove.id];
 
             return nodeToRemove;
         },
@@ -331,6 +339,36 @@
         removeNode: function (nodeData) {
             var index = this.indexOf(nodeData);
             return this.removeAt(index);
+        },
+
+        /**
+         * Removes a node found by the passed id
+         *
+         * @param {string|number} nodeData The data of the node to remove
+         * @returns {Node|number} the node that was removed, -1 if not found
+         */
+        removeNodeById: function (id) {
+            var nodeToRemove = this.findById(id);
+            if(!nodeToRemove)
+                return -1;
+
+            if (nodeToRemove.id === this.getHeadNode().id) {
+                return this.removeFirst();
+            }
+
+            if (nodeToRemove.id === this.getTailNode().id){
+                return this.remove();
+            }
+
+            nodeToRemove.prev.next = nodeToRemove.next;
+            nodeToRemove.next.prev = nodeToRemove.prev;
+            nodeToRemove.next = nodeToRemove.prev = null;
+
+            this.size -= 1;
+
+            delete this.nodeHashTable[nodeToRemove.id];
+
+            return nodeToRemove;
         },
 
         //################## FIND methods ####################
@@ -360,6 +398,16 @@
 
             // only get here if we didn't find a node containing the nodeData
             return -1;
+        },
+
+        /**
+         * finds a node in O(1) time by it's ID indexed by nodeHashTable
+         *
+         * @param {string|number} nodeData The id of the node to find
+         * @returns the node if found, -1 otherwise
+         */
+        findById: function (id){
+            return this.nodeHashTable[id] || -1;
         },
 
         /**

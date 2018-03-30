@@ -311,6 +311,28 @@ describe('Linked List', function () {
             expect(list.getSize()).to.equal(3);
         });
 
+        it('removes a node with a given ID', function () {
+            populateList(list, 3);
+            expect(list.getSize()).to.equal(3);
+
+            var node = list.getHeadNode().next;
+            var id = node.id;
+
+            var prev = node.prev;
+            var next = node.next;
+
+            node = list.removeNodeById(id);
+
+            expect(prev.next).to.equal(next);
+            expect(next.prev).to.equal(prev);
+
+            expect(node.prev).to.equal(null);
+            expect(node.next).to.equal(null);
+
+            expect(node.id).to.equal(id);
+            expect(list.getSize()).to.equal(2);
+        });
+
     });
 
     describe('find functionality', function () {
@@ -319,6 +341,15 @@ describe('Linked List', function () {
             var node = list.find('test item 2');
             expect(node).to.be.an('object');
             expect(node.getData()).to.equal('test item 2');
+        });
+
+        it('finds a node with a given ID', function () {
+            populateList(list, 3);
+            var id = list.getHeadNode().next.id;
+            var node = list.findById(id);
+            expect(node.id).to.equal(id);
+            expect(node.next).to.equal(list.getTailNode());
+            expect(node.prev).to.equal(list.getHeadNode());
         });
 
         it('finds a node with a complex obj', function () {
