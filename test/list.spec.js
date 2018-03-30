@@ -233,6 +233,16 @@ describe('Linked List', function () {
             expect(node.getData()).to.equal('test item 0');
         });
 
+        it('inserts nodes with custom hashmap ID', function () {
+            list.insert(1, "aaa");
+            list.insert(2, "bbb");
+            expect(list.getHeadNode().getData()).to.equal(1);
+            expect(list.getTailNode().getData()).to.equal(2);
+
+            expect(list.getHeadNode().id).to.equal("aaa");
+            expect(list.getTailNode().id).to.equal("bbb");
+        });
+
         it('inserts item after a particular node', function () {
             populateList(list, 3);
             list.insert('test item 5');
