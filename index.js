@@ -142,7 +142,7 @@
          */
         insertFirst: function (data, id) {
             if (this.isEmpty()) {
-                this.insert(data);
+                this.insert(data, id);
             } else {
                 var newNode = this.createNewNode(data, id);
 
